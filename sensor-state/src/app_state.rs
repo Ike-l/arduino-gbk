@@ -1,10 +1,10 @@
-use crate::{DrawTextCallback, SetFontCallback, current_time::EnvironmentData, display_settings::DisplaySettings, font_type::FontType, pages::Page, sensor_data::SensorData, settings::Settings};
+use crate::{DrawTextCallback, SetFontCallback, current_time::EnvironmentData, display_settings::DisplaySettings, font_type::FontType, pages::Page, sensor_data::{SensorData, sensor_accumulator::SensorAccumulator}, settings::Settings};
 
 pub struct AppState {
     pub current_page: Page,
     pub settings: Settings,
     
-    pub value_accumulator: Option<SensorData>,
+    pub sensor_accumulator: SensorAccumulator,
 
     pub last_button_state: bool,
     pub last_button_press_time: u32,
@@ -14,11 +14,8 @@ impl AppState {
     pub const fn default() -> Self {
         Self {
             current_page: Page::MainMenuPage,
-            value_accumulator: None,
-            settings: Settings {
-                track_all: true,
-                keep_all: true,
-            },
+            sensor_accumulator: SensorAccumulator::default(),
+            settings: Settings::default(),
             last_button_state: false,
             last_button_press_time: 0,
         }
@@ -32,21 +29,31 @@ impl AppState {
         let button_just_pressed = sensor_data.button && !self.last_button_state;
 
         let time_since_last_press = environment_data.current_time.wrapping_sub(self.last_button_press_time);
-
+        
         if button_just_pressed && time_since_last_press > 200 {
-            if self.current_page == Page::RotaryPage {
-                self.current_page = Page::MainMenuPage;
-            } else {
-                self.current_page = Page::RotaryPage;
-            }
+            let selected_page = if self.current_page == Page::MainMenuPage { Page::RotaryPage } else { Page::MainMenuPage }; 
+            self.current_page = selected_page;
 
             self.last_button_press_time = environment_data.current_time;
         }
 
         self.last_button_state = sensor_data.button;
         
-
-        self.value_accumulator.replace(*sensor_data);
+        match (self.settings.keep_all, self.settings.track_all) {
+            (_, true) => {
+                // accumulates ALL new sensor data regardless if page
+                self.sensor_accumulator.track(sensor_data);
+            },
+            (true, false) => {
+                // accumulates only the new sensor data for the current page
+                self.sensor_accumulator.track_one(&self.current_page, sensor_data);
+            },
+            (false, false) => {
+                // accumulates only the new sensor data for the current page
+                // removing all other accumulated data
+                self.sensor_accumulator.keep_one(&self.current_page, sensor_data);
+            },
+        }
     }
 
     pub fn render(

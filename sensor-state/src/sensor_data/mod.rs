@@ -1,3 +1,5 @@
+pub mod sensor_accumulator;
+
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct SensorData {
