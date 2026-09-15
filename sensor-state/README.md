@@ -1,5 +1,3 @@
-The other half of my project [here](https://github.com/Ike-l/arduino_uno.git)
-
 building:
 * cargo +nightly build --release
 
