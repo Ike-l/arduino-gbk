@@ -71,17 +71,11 @@ void panic_blink() {
 }
 
 void setup() {
-  Serial.begin(9600);
-  
   pinMode(led_pin, OUTPUT);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(button_pin, INPUT);
 
   dht.begin();
-
-  if (!bmp280.init()) {
-    Serial.println(F("BMP280 initialization failed!"));
-  }
 
   accel.begin(Wire, 0x19);
   accel.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
@@ -95,12 +89,8 @@ void setup() {
   display_settings.screen_height = OLED_height;
   display_settings.screen_width = OLED_width;
 
-  do {
     oled.setCursor(0, 20);
-    oled.print(F("All Sensors"));
-    oled.setCursor(0, 40);
-    oled.print(F("Initialized!"));
-  } while ( oled.nextPage() );
+  oled.print(F("Ok"));
 
   delay(2000);
 }
