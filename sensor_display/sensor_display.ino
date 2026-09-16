@@ -37,12 +37,14 @@ SensorData sensor_data;
 EnvironmentData environment_data;
 DisplaySettings display_settings;
 
-void draw_text_callback(int16_t x, int16_t y, const char* text) {
+int16_t draw_text_callback(int16_t x, int16_t y, const char* text) {
   // offsets from how text is rendered from the bottom of the text
   int16_t baseline_y = y + oled.getAscent();
 
   oled.setCursor(x, baseline_y);
   oled.print(text);
+
+  return x + oled.getStrWidth(text);
 }
 
 int8_t set_font_callback(uint8_t font_type) {

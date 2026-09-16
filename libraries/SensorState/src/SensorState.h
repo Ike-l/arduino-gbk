@@ -27,7 +27,7 @@ extern "C" {
         uint8_t screen_height;
     };
     
-    typedef void (*DrawTextCallback)(int16_t x, int16_t y, const char* text);
+    typedef int16_t (*DrawTextCallback)(int16_t x, int16_t y, const char* text);
     typedef int8_t (*SetFontCallback)(uint8_t font_type);
     
     void render(
