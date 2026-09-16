@@ -12,7 +12,8 @@ pub mod settings;
 pub enum Page {
     MainMenuPage,
     ButtonPage,
-    RotaryPage
+    RotaryPage,
+    SettingsPage
 }
 
 impl Page {
@@ -27,9 +28,7 @@ impl Page {
             Page::MainMenuPage => main_menu::header(),
             Page::ButtonPage => button::header(),
             Page::RotaryPage => rotary::header(),
-            Page::MainMenuPage => "Main Menu",
-            Page::ButtonPage => "Button",
-            Page::RotaryPage => "Rotary",
+            Page::SettingsPage => settings::header(),
         };
 
         text.push_str(header);
@@ -37,7 +36,11 @@ impl Page {
         text
     }
 
-    pub fn render(&self, sensor_accumulator: &SensorAccumulator) -> impl Iterator<Item = Option<String<16>>> {
+    pub fn render(
+        &self, 
+        sensor_accumulator: &SensorAccumulator,
+        settings: &Settings
+    ) -> impl Iterator<Item = Option<String<16>>> {
         let mut result: [Option<String<16>>; 8] = [const { None }; 8];
 
         match self {

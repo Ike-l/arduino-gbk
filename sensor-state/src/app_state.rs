@@ -47,7 +47,24 @@ impl AppState {
                 },
                 Page::RotaryPage => {
                     if sensor_data.rotary == 0 {
+                        Some(Page::SettingsPage)
+                    } else { None }
+                },
+                Page::SettingsPage => {
+                    if sensor_data.rotary == 0 {
                         Some(Page::MainMenuPage)
+                    } else if sensor_data.rotary < 128 {
+                        self.settings.set_keep_all(true);
+                        None
+                    } else if sensor_data.rotary < 256 {
+                        self.settings.set_track_all(true);
+                        None
+                    } else if sensor_data.rotary < 512 {
+                        self.settings.set_keep_all(false);
+                        None
+                    } else if sensor_data.rotary < 1024 {
+                        self.settings.set_track_all(false);
+                        None
                     } else { None }
                 }
             };
@@ -102,7 +119,10 @@ impl AppState {
         draw_text_cb(current_end_x, cursor[1], "<\0".as_ptr());
         
         cursor[1] += header_font_height as i16;
-        for text in self.current_page.render(&self.sensor_accumulator) {
+        for text in self.current_page.render(
+            &self.sensor_accumulator,
+            &self.settings
+        ) {
             if let Some(mut text) = text {
                 let _  = text.push('\0');
                 draw_text_cb(cursor[0], cursor[1], text.as_ptr());

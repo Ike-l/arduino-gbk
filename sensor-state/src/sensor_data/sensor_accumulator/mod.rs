@@ -40,7 +40,8 @@ impl SensorAccumulator {
             },
             Page::RotaryPage => {
                 self.rotary.track(counted_click, sensor_data);
-            }
+            },
+            Page::SettingsPage => {}
         }
     }
 
@@ -61,6 +62,10 @@ impl SensorAccumulator {
                 self.rotary.track(counted_click, sensor_data);
                 self.rotary.value = sensor_data.rotary;
                 self.button.clear();
+            },
+            Page::SettingsPage => {
+                self.button.clear();
+                self.rotary.clear();
             }
         }
     }
