@@ -31,6 +31,7 @@ impl AppState {
         
         let mut counted_click = button_just_pressed && time_since_last_press > 200;
 
+        // EVENTS
         let mut changed_page = false;
         if counted_click {
             let new_page = match self.current_page {
