@@ -15,7 +15,7 @@ use display_settings::DisplaySettings;
 
 use crate::current_time::EnvironmentData;
 
-type DrawTextCallback = extern "C" fn(x: i16, y: i16, text: *const u8);
+type DrawTextCallback = extern "C" fn(x: i16, y: i16, text: *const u8) -> i16;
 type SetFontCallback = extern "C" fn(font_type: u8) -> i8;
 unsafe extern "C" {
     fn panic_blink() -> !; 
@@ -26,15 +26,18 @@ static mut APP_STATE: AppState = AppState::default();
 #[unsafe(no_mangle)]
 pub extern "C" fn render(
     display_settings: *const DisplaySettings,
+    environment_data: *const EnvironmentData,
     draw_text_cb: DrawTextCallback,
     set_font_cb: SetFontCallback,
 ) {
     let state = unsafe { &mut *(&raw mut APP_STATE) };
 
     let display_settings = unsafe { &*display_settings };
+    let environment_data = unsafe { &*environment_data };
 
     state.render(
         display_settings,
+        environment_data,
         draw_text_cb,
         set_font_cb
     );

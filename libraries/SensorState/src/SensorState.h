@@ -32,6 +32,7 @@ extern "C" {
     
     void render(
         const DisplaySettings* display_settings,
+        const EnvironmentData* environment_data,
         DrawTextCallback draw_text_cb,
         SetFontCallback set_font_cb
     );

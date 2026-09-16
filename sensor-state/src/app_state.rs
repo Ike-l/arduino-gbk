@@ -59,6 +59,7 @@ impl AppState {
     pub fn render(
         &mut self, 
         _display_settings: &DisplaySettings,
+        environment_data: &EnvironmentData,
         draw_text_cb: DrawTextCallback,
         set_font_cb: SetFontCallback,
     ) {
