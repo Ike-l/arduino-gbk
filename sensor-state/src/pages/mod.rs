@@ -8,6 +8,10 @@ pub enum Page {
 }
 
 impl Page {
+pub const fn default() -> Self {
+        Self::MainMenuPage
+    }
+
     pub fn header(&self) -> String<128> {
         let mut text = String::new();
 

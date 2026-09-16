@@ -13,7 +13,7 @@ pub struct AppState {
 impl AppState {
     pub const fn default() -> Self {
         Self {
-            current_page: Page::MainMenuPage,
+            current_page: Page::default(),
             sensor_accumulator: SensorAccumulator::default(),
             settings: Settings::default(),
             last_button_state: false,

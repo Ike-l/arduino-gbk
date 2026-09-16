@@ -1,11 +1,11 @@
-use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::button_accumulator::ButtonAccumulator}};
+use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, rotary_accumulator::RotaryAccumulator}}};
 
 pub mod button_accumulator;
 pub mod rotary_accumulator;
 
+pub struct SensorAccumulator {
     pub button: ButtonAccumulator,
     pub rotary: RotaryAccumulator,
-    pub button: ButtonAccumulator
 }
 
 impl SensorAccumulator {
