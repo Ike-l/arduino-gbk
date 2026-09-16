@@ -19,11 +19,21 @@ impl Settings {
         (self.raw & 0b0000_0010) != 0 
     }
 
-    pub fn set_track_all(&mut self) {
-        self.raw |= 0b0000_0001;
+    pub fn set_track_all(&mut self, state: bool) {
+        if state {
+            self.raw |= 0b0000_0001;
+            self.set_keep_all(true);
+        } else {
+            self.raw &= 0b1111_1110;
+        }
     }
 
-    pub fn set_keep_all(&mut self) {
-        self.raw |= 0b0000_0010;
+    pub fn set_keep_all(&mut self, state: bool) {
+        if state {
+            self.raw |= 0b0000_0010;
+        } else {
+            self.raw &= 0b1111_1101;
+            self.set_track_all(false);
+        }
     }
 }
