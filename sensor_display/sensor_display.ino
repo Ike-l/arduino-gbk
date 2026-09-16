@@ -49,11 +49,9 @@ int16_t draw_text_callback(int16_t x, int16_t y, const char* text) {
 
 int8_t set_font_callback(uint8_t font_type) {
   if (font_type == 0) {
-    // 8-pixel normal font for the contents
-    oled.setFont(u8g2_font_ncenB08_tr); 
+    oled.setFont(u8g2_font_6x10_tr); 
   } else if (font_type == 1) {
-    // 14-pixel bold font for the header
-    oled.setFont(u8g2_font_ncenB14_tr); 
+    oled.setFont(u8g2_font_8x13B_tr); 
   }
   
   display_settings.font_height = oled.getAscent() - oled.getDescent();
@@ -110,12 +108,14 @@ void loop() {
 
     sensor_data.sound = analogRead(sound_pin);
     sensor_data.light = analogRead(light_pin);
-    sensor_data.temperature = dht.readTemperature(); // Celsius
+
     sensor_data.humidity = dht.readHumidity();
-    sensor_data.pressure = bmp280.getPressure(); // Pascals
-    sensor_data.acceleration[0] = accel.getAccelerationX();
-    sensor_data.acceleration[1] = accel.getAccelerationY();
-    sensor_data.acceleration[2] = accel.getAccelerationZ();
+
+    // sensor_data.temperature = dht.readTemperature(); // Celsius
+    // sensor_data.pressure = bmp280.getPressure(); // Pascals
+    // sensor_data.acceleration[0] = accel.getAccelerationX();
+    // sensor_data.acceleration[1] = accel.getAccelerationY();
+    // sensor_data.acceleration[2] = accel.getAccelerationZ();
 
     oled.firstPage();
     do {
