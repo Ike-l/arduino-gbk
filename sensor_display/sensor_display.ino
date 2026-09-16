@@ -119,7 +119,7 @@ void loop() {
 
     oled.firstPage();
     do {
-      render(&display_settings, draw_text_callback, set_font_callback);
+      render(&display_settings, &environment_data, draw_text_callback, set_font_callback);
     } while (oled.nextPage());
   }
 }
