@@ -15,11 +15,7 @@ pub fn render(
     
     let count = sensor_accumulator.button.count;
 
-    assert!(count < 1_000);
-
-    // Safety
-    // panics
-    unsafe { push_number(&mut text1, count) };
+    push_number(&mut text1, count);
     
     result[0] = Some(text1);
 }

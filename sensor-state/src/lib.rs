@@ -67,7 +67,7 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
-pub unsafe fn push_number(
+pub fn push_number(
     text: &mut String<16>, 
     mut num: u32,
 ) {

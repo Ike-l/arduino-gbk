@@ -16,12 +16,7 @@ pub fn render(
     
     let value = sensor_accumulator.rotary.value;
 
-    assert!(value < 10_000);
-    assert!(value >= 0);
-
-    // Safety
-    // panics
-    unsafe { push_number(&mut text1, value as u32) };
+    push_number(&mut text1, value as u32);
     
     result[0] = Some(text1);
 }
