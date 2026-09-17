@@ -63,43 +63,11 @@ impl SensorAccumulator {
     /// 
     /// removing all other accumulated data
     pub fn keep_one(&mut self, counted_click: bool, current_page: &Page, sensor_data: &SensorData) {
-        match current_page {
-            Page::MainMenuPage => {
-                self.button.clear();
-                self.rotary.clear();
-                self.sound.clear();
-                self.light.clear();
-            },
-            Page::ButtonPage => {
-                self.button.track(counted_click, sensor_data);
-                self.rotary.clear();
-                self.sound.clear();
-                self.light.clear();
-            },
-            Page::RotaryPage => {
-                self.button.clear();
-                self.rotary.track(counted_click, sensor_data);
-                self.sound.clear();
-                self.light.clear();
-            },
-            Page::SoundPage => {
-                self.button.clear();
-                self.rotary.clear();
-                self.sound.track(counted_click, sensor_data);
-                self.light.clear();
-            },
-            Page::LightPage => {
-                self.button.clear();
-                self.rotary.clear();
-                self.sound.clear();
-                self.light.track(counted_click, sensor_data);
-            },
-            Page::SettingsPage => {
-                self.button.clear();
-                self.rotary.clear();
-                self.sound.clear();
-                self.light.clear();
-            }
-        }
+        if !matches!(current_page, Page::ButtonPage) { self.button.clear(); }
+        if !matches!(current_page, Page::RotaryPage) { self.rotary.clear(); }
+        if !matches!(current_page, Page::SoundPage)  { self.sound.clear(); }
+        if !matches!(current_page, Page::LightPage)  { self.light.clear(); }
+
+        self.track_one(counted_click, current_page, sensor_data);
     }
 }
