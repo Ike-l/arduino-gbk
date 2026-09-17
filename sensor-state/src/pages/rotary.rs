@@ -12,11 +12,16 @@ pub fn render(
     _settings: &Settings
 ) {
     let mut text1 = String::new();
-    let _ = text1.push_str("val: ");
-    
-    let value = sensor_accumulator.rotary.value;
+    let mut text2 = String::new();
 
+    let _ = text1.push_str("val: ");
+    let value = sensor_accumulator.rotary.value;
     push_number(&mut text1, value as u32);
+
+    let _ = text2.push_str("max: ");
+    let value = sensor_accumulator.rotary.max;
+    push_number(&mut text2, value as u32);
     
     result[0] = Some(text1);
+    result[1] = Some(text2);
 }
