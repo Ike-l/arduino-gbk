@@ -14,10 +14,17 @@ const int buzzer_pin = 5;
 const int button_pin = 6;
 
 // Uses the page buffer (_1_) for the Grove kit's SSD1306 OLED
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R2, /* reset=*/ U8X8_PIN_NONE);
+// U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R2, /* reset=*/ U8X8_PIN_NONE);
+U8X8_SSD1306_128X64_NONAME_HW_I2C oled(/* reset=*/ U8X8_PIN_NONE);
 
-const u8g2_uint_t OLED_width = oled.getDisplayWidth();
-const u8g2_uint_t OLED_height = oled.getDisplayHeight();
+// const u8g2_uint_t OLED_width = oled.getDisplayWidth();
+// const u8g2_uint_t OLED_height = oled.getDisplayHeight();
+
+// const int max_OLED_x = OLED_width - 1;
+// const int max_OLED_y = OLED_height - 1;
+
+const uint8_t OLED_width = oled.getCols();
+const uint8_t OLED_height = oled.getRows();
 
 const int max_OLED_x = OLED_width - 1;
 const int max_OLED_y = OLED_height - 1;
@@ -39,22 +46,27 @@ DisplaySettings display_settings;
 
 int16_t draw_text_callback(int16_t x, int16_t y, const char* text) {
   // offsets from how text is rendered from the bottom of the text
-  int16_t baseline_y = y + oled.getAscent();
+  // int16_t baseline_y = y + oled.getAscent();
 
-  oled.setCursor(x, baseline_y);
+  // oled.setCursor(x, baseline_y);
+  oled.setCursor(x, y);
   oled.print(text);
 
-  return x + oled.getStrWidth(text);
+  // return x + oled.getStrWidth(text);
+  return x + strlen(text);
 }
 
 int8_t set_font_callback(uint8_t font_type) {
-  if (font_type == 0) {
-    oled.setFont(u8g2_font_6x10_tr); 
-  } else if (font_type == 1) {
-    oled.setFont(u8g2_font_8x13B_tr); 
-  }
+  // if (font_type == 0) {
+  //   oled.setFont(u8g2_font_6x10_tr); // 4%
+  // } else if (font_type == 1) {
+  //   oled.setFont(u8g2_font_8x13B_tr); // 3%
+  // }
+
+  oled.setFont(u8x8_font_chroma48medium8_r);
   
-  display_settings.font_height = oled.getAscent() - oled.getDescent();
+  // display_settings.font_height = oled.getAscent() - oled.getDescent();
+  display_settings.font_height = 1;
 
   return display_settings.font_height;
 }
@@ -81,16 +93,20 @@ void setup() {
   accel.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
 
   oled.begin();
-  oled.firstPage();
+  oled.setFlipMode(1);
+  // oled.firstPage();
 
-  oled.setFont(u8g2_font_ncenB08_tr);
-  display_settings.font_height = oled.getAscent() - oled.getDescent();
+  // oled.setFont(u8g2_font_ncenB08_tr);
+  oled.setFont(u8x8_font_chroma48medium8_r);
+  // display_settings.font_height = oled.getAscent() - oled.getDescent();
+
+  // display_settings.screen_height = OLED_height;
+  // display_settings.screen_width = OLED_width;
+
+  display_settings.font_height = 1;
 
   display_settings.screen_height = OLED_height;
   display_settings.screen_width = OLED_width;
-
-    oled.setCursor(0, 20);
-  oled.print(F("Ok"));
 
   delay(2000);
 }
@@ -111,15 +127,16 @@ void loop() {
 
     sensor_data.humidity = dht.readHumidity();
 
-    // sensor_data.temperature = dht.readTemperature(); // Celsius
-    // sensor_data.pressure = bmp280.getPressure(); // Pascals
-    // sensor_data.acceleration[0] = accel.getAccelerationX();
-    // sensor_data.acceleration[1] = accel.getAccelerationY();
-    // sensor_data.acceleration[2] = accel.getAccelerationZ();
+    sensor_data.temperature = dht.readTemperature(); // Celsius
+    sensor_data.pressure = bmp280.getPressure(); // Pascals // 15% max program storage space
+    sensor_data.acceleration[0] = accel.getAccelerationX();
+    sensor_data.acceleration[1] = accel.getAccelerationY();
+    sensor_data.acceleration[2] = accel.getAccelerationZ();
 
-    oled.firstPage();
-    do {
-      render(&display_settings, &environment_data, draw_text_callback, set_font_callback);
-    } while (oled.nextPage());
+    oled.clearDisplay();
+    // oled.firstPage();
+    // do {
+    render(&display_settings, &environment_data, draw_text_callback, set_font_callback);
+    // } while (oled.nextPage());
   }
 }
