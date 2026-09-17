@@ -57,6 +57,11 @@ impl AppState {
                 },
                 Page::LightPage => {
                     if sensor_data.rotary == 0 {
+                        Some(Page::TemperaturePage)
+                    } else { None }
+                },
+                Page::TemperaturePage => {
+                    if sensor_data.rotary == 0 {
                         Some(Page::SettingsPage)
                     } else { None }
                 },

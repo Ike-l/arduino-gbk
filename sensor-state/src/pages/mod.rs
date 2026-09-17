@@ -7,6 +7,7 @@ pub mod button;
 pub mod rotary;
 pub mod sound;
 pub mod light;
+pub mod temperature;
 pub mod settings;
 
 #[derive(PartialEq)]
@@ -17,6 +18,7 @@ pub enum Page {
     RotaryPage,
     SoundPage,
     LightPage,
+    TemperaturePage,
     SettingsPage
 }
 
@@ -34,6 +36,7 @@ impl Page {
             Page::RotaryPage => rotary::header(),
             Page::SoundPage => sound::header(),
             Page::LightPage => light::header(),
+            Page::TemperaturePage => temperature::header(),
             Page::SettingsPage => settings::header(),
         };
 
@@ -64,6 +67,9 @@ impl Page {
             },
             Page::LightPage => {
                 light::render(&mut result, sensor_accumulator, settings);
+            },
+            Page::TemperaturePage => {
+                temperature::render(&mut result, sensor_accumulator, settings);
             },
             Page::SettingsPage => {
                 settings::render(&mut result, sensor_accumulator, settings);

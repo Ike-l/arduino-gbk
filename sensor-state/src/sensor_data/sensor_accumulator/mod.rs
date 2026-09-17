@@ -1,15 +1,17 @@
-use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, light_accumulator::LightAccumulator, rotary_accumulator::RotaryAccumulator, sound_accumulator::SoundAccumulator}}};
+use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, light_accumulator::LightAccumulator, rotary_accumulator::RotaryAccumulator, sound_accumulator::SoundAccumulator, temperature_accumulator::TemperatureAccumulator}}};
 
 pub mod button_accumulator;
 pub mod rotary_accumulator;
 pub mod sound_accumulator;
 pub mod light_accumulator;
+pub mod temperature_accumulator;
 
 pub struct SensorAccumulator {
     pub button: ButtonAccumulator,
     pub rotary: RotaryAccumulator,
     pub sound: SoundAccumulator,
     pub light: LightAccumulator,
+    pub temperature: TemperatureAccumulator
 }
 
 impl SensorAccumulator {
@@ -19,6 +21,7 @@ impl SensorAccumulator {
             rotary: RotaryAccumulator::default(),
             sound: SoundAccumulator::default(),
             light: LightAccumulator::default(),
+            temperature: TemperatureAccumulator::default(),
         }
     }
 
@@ -29,14 +32,11 @@ impl SensorAccumulator {
         self.rotary.track(counted_click, sensor_data);
         self.sound.track(counted_click, sensor_data);
         self.light.track(counted_click, sensor_data);
+        self.temperature.track(counted_click, sensor_data);
 
         // sensor_data.acceleration
         // sensor_data.humidity
-        // sensor_data.light
         // sensor_data.pressure
-        // sensor_data.rotary
-        // sensor_data.sound
-        // sensor_data.temperature
     }
 
     /// accumulates only the new sensor data for the current page
@@ -55,6 +55,9 @@ impl SensorAccumulator {
             Page::LightPage => {
                 self.light.track(counted_click, sensor_data);
             },
+            Page::TemperaturePage => {
+                self.temperature.track(counted_click, sensor_data);
+            },
             Page::SettingsPage => {}
         }
     }
@@ -67,6 +70,7 @@ impl SensorAccumulator {
         if !matches!(current_page, Page::RotaryPage) { self.rotary.clear(); }
         if !matches!(current_page, Page::SoundPage)  { self.sound.clear(); }
         if !matches!(current_page, Page::LightPage)  { self.light.clear(); }
+        if !matches!(current_page, Page::TemperaturePage) { self.temperature.clear(); }
 
         self.track_one(counted_click, current_page, sensor_data);
     }
