@@ -96,6 +96,7 @@ void loop() {
 
   sensor_data.button = digitalRead(button_pin) == HIGH;
   sensor_data.rotary = analogRead(rotary_pin);
+  sensor_data.temperature = dht.readTemperature(); // Celsius
 
   tick(&sensor_data, &environment_data);
 
@@ -107,8 +108,7 @@ void loop() {
 
     sensor_data.humidity = dht.readHumidity();
 
-    sensor_data.temperature = dht.readTemperature(); // Celsius
-    sensor_data.pressure = bmp280.getPressure(); // Pascals
+    // sensor_data.pressure = bmp280.getPressure(); // Pascals
     sensor_data.acceleration[0] = accel.getAccelerationX();
     sensor_data.acceleration[1] = accel.getAccelerationY();
     sensor_data.acceleration[2] = accel.getAccelerationZ();
