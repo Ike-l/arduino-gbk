@@ -83,14 +83,10 @@ void setup() {
   oled.begin();
   oled.firstPage();
 
-  oled.setFont(u8g2_font_ncenB08_tr);
   display_settings.font_height = oled.getAscent() - oled.getDescent();
 
   display_settings.screen_height = OLED_height;
   display_settings.screen_width = OLED_width;
-
-    oled.setCursor(0, 20);
-  oled.print(F("Ok"));
 
   delay(2000);
 }
@@ -111,11 +107,11 @@ void loop() {
 
     sensor_data.humidity = dht.readHumidity();
 
-    // sensor_data.temperature = dht.readTemperature(); // Celsius
-    // sensor_data.pressure = bmp280.getPressure(); // Pascals
-    // sensor_data.acceleration[0] = accel.getAccelerationX();
-    // sensor_data.acceleration[1] = accel.getAccelerationY();
-    // sensor_data.acceleration[2] = accel.getAccelerationZ();
+    sensor_data.temperature = dht.readTemperature(); // Celsius
+    sensor_data.pressure = bmp280.getPressure(); // Pascals
+    sensor_data.acceleration[0] = accel.getAccelerationX();
+    sensor_data.acceleration[1] = accel.getAccelerationY();
+    sensor_data.acceleration[2] = accel.getAccelerationZ();
 
     oled.firstPage();
     do {
