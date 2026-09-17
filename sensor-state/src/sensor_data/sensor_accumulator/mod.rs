@@ -11,6 +11,8 @@ pub struct SensorAccumulator {
 impl SensorAccumulator {
     pub const fn default() -> Self {
         Self {
+            button: ButtonAccumulator::default(),
+            rotary: RotaryAccumulator::default(),
             button: ButtonAccumulator { count: 0 },
             rotary: RotaryAccumulator { value: 0 }
         }
