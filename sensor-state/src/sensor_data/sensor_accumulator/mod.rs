@@ -1,11 +1,15 @@
-use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, rotary_accumulator::RotaryAccumulator}}};
+use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, light_accumulator::LightAccumulator, rotary_accumulator::RotaryAccumulator, sound_accumulator::SoundAccumulator}}};
 
 pub mod button_accumulator;
 pub mod rotary_accumulator;
+pub mod sound_accumulator;
+pub mod light_accumulator;
 
 pub struct SensorAccumulator {
     pub button: ButtonAccumulator,
     pub rotary: RotaryAccumulator,
+    pub sound: SoundAccumulator,
+    pub light: LightAccumulator,
 }
 
 impl SensorAccumulator {
@@ -13,8 +17,8 @@ impl SensorAccumulator {
         Self {
             button: ButtonAccumulator::default(),
             rotary: RotaryAccumulator::default(),
-            button: ButtonAccumulator { count: 0 },
-            rotary: RotaryAccumulator { value: 0 }
+            sound: SoundAccumulator::default(),
+            light: LightAccumulator::default(),
         }
     }
 
@@ -23,6 +27,8 @@ impl SensorAccumulator {
     pub fn track(&mut self, counted_click: bool, sensor_data: &SensorData) {
         self.button.track(counted_click, sensor_data);
         self.rotary.track(counted_click, sensor_data);
+        self.sound.track(counted_click, sensor_data);
+        self.light.track(counted_click, sensor_data);
 
         // sensor_data.acceleration
         // sensor_data.humidity
@@ -43,6 +49,12 @@ impl SensorAccumulator {
             Page::RotaryPage => {
                 self.rotary.track(counted_click, sensor_data);
             },
+            Page::SoundPage => {
+                self.sound.track(counted_click, sensor_data);
+            },
+            Page::LightPage => {
+                self.light.track(counted_click, sensor_data);
+            },
             Page::SettingsPage => {}
         }
     }
@@ -55,19 +67,38 @@ impl SensorAccumulator {
             Page::MainMenuPage => {
                 self.button.clear();
                 self.rotary.clear();
+                self.sound.clear();
+                self.light.clear();
             },
             Page::ButtonPage => {
                 self.button.track(counted_click, sensor_data);
                 self.rotary.clear();
+                self.sound.clear();
+                self.light.clear();
             },
             Page::RotaryPage => {
-                self.rotary.track(counted_click, sensor_data);
-                self.rotary.value = sensor_data.rotary;
                 self.button.clear();
+                self.rotary.track(counted_click, sensor_data);
+                self.sound.clear();
+                self.light.clear();
+            },
+            Page::SoundPage => {
+                self.button.clear();
+                self.rotary.clear();
+                self.sound.track(counted_click, sensor_data);
+                self.light.clear();
+            },
+            Page::LightPage => {
+                self.button.clear();
+                self.rotary.clear();
+                self.sound.clear();
+                self.light.track(counted_click, sensor_data);
             },
             Page::SettingsPage => {
                 self.button.clear();
                 self.rotary.clear();
+                self.sound.clear();
+                self.light.clear();
             }
         }
     }

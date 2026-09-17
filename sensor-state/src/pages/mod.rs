@@ -5,6 +5,8 @@ use crate::{sensor_data::sensor_accumulator::SensorAccumulator, settings::Settin
 pub mod main_menu;
 pub mod button;
 pub mod rotary;
+pub mod sound;
+pub mod light;
 pub mod settings;
 
 #[derive(PartialEq)]
@@ -13,6 +15,8 @@ pub enum Page {
     MainMenuPage,
     ButtonPage,
     RotaryPage,
+    SoundPage,
+    LightPage,
     SettingsPage
 }
 
@@ -28,6 +32,8 @@ impl Page {
             Page::MainMenuPage => main_menu::header(),
             Page::ButtonPage => button::header(),
             Page::RotaryPage => rotary::header(),
+            Page::SoundPage => sound::header(),
+            Page::LightPage => light::header(),
             Page::SettingsPage => settings::header(),
         };
 
@@ -52,6 +58,12 @@ impl Page {
             },
             Page::RotaryPage => {
                 rotary::render(&mut result, sensor_accumulator, settings);
+            },
+            Page::SoundPage => {
+                sound::render(&mut result, sensor_accumulator, settings);
+            },
+            Page::LightPage => {
+                light::render(&mut result, sensor_accumulator, settings);
             },
             Page::SettingsPage => {
                 settings::render(&mut result, sensor_accumulator, settings);

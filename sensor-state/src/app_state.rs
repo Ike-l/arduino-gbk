@@ -47,6 +47,16 @@ impl AppState {
                 },
                 Page::RotaryPage => {
                     if sensor_data.rotary == 0 {
+                        Some(Page::SoundPage)
+                    } else { None }
+                },
+                Page::SoundPage => {
+                    if sensor_data.rotary == 0 {
+                        Some(Page::LightPage)
+                    } else { None }
+                },
+                Page::LightPage => {
+                    if sensor_data.rotary == 0 {
                         Some(Page::SettingsPage)
                     } else { None }
                 },
