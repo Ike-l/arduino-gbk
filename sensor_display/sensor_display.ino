@@ -48,11 +48,11 @@ int16_t draw_text_callback(int16_t x, int16_t y, const char* text) {
 }
 
 int8_t set_font_callback(uint8_t font_type) {
-  if (font_type == 0) {
+  // if (font_type == 0) {
     oled.setFont(u8g2_font_6x10_tr); 
-  } else if (font_type == 1) {
-    oled.setFont(u8g2_font_8x13B_tr); 
-  }
+  // } else if (font_type == 1) {
+    // oled.setFont(u8g2_font_8x13B_tr); 
+  // }
   
   display_settings.font_height = oled.getAscent() - oled.getDescent();
 
