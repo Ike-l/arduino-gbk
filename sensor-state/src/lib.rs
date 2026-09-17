@@ -67,14 +67,8 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
-/// # Safety
-/// 
-/// `MAX_DIGIT_COUNT` must be the maximum number of digits `num` could be
-pub unsafe fn push_number<
-    const N: usize, 
-    const MAX_DIGIT_COUNT: usize,
->(
-    text: &mut String<N>, 
+pub unsafe fn push_number(
+    text: &mut String<16>, 
     mut num: u32,
 ) {
     if num == 0 {
@@ -82,7 +76,8 @@ pub unsafe fn push_number<
         return;
     }
 
-    let mut buf = [0u8; MAX_DIGIT_COUNT];
+    // 10 is how many digits for u32::MAX
+    let mut buf = [0u8; 10];
     let mut i = 0;
 
     while num > 0 {

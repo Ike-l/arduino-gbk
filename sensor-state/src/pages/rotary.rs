@@ -21,7 +21,7 @@ pub fn render(
 
     // Safety
     // panics
-    unsafe { push_number::<16, 5>(&mut text1, value as u32) };
+    unsafe { push_number(&mut text1, value as u32) };
     
     result[0] = Some(text1);
 }

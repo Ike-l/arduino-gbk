@@ -19,7 +19,7 @@ pub fn render(
 
     // Safety
     // panics
-    unsafe { push_number::<16, 4>(&mut text1, count) };
+    unsafe { push_number(&mut text1, count) };
     
     result[0] = Some(text1);
 }

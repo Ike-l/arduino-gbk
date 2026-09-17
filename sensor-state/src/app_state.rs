@@ -108,9 +108,9 @@ impl AppState {
         
         let mut current_end_x = draw_text_cb(cursor[0], cursor[1], page_header.as_ptr());
 
-        let mut timer = heapless::String::<32>::new();        
+        let mut timer = heapless::String::<16>::new();        
         let total_secs = environment_data.current_time / 1000;
-        unsafe { push_number::<32, 10>(&mut timer, total_secs); } 
+        unsafe { push_number(&mut timer, total_secs); } 
         let _ = timer.push_str("s \0");
 
         let content_font_height = set_font_cb(FontType::Contents as u8);
