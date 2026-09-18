@@ -34,61 +34,35 @@ impl AppState {
         // EVENTS
         let mut changed_page = false;
         if counted_click {
-            let new_page = match self.current_page {
-                Page::MainMenuPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::ButtonPage)
-                    } else { None }
-                },
-                Page::ButtonPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::RotaryPage)
-                    } else { None }
-                },
-                Page::RotaryPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::SoundPage)
-                    } else { None }
-                },
-                Page::SoundPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::LightPage)
-                    } else { None }
-                },
-                Page::LightPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::TemperaturePage)
-                    } else { None }
-                },
-                Page::TemperaturePage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::SettingsPage)
-                    } else { None }
-                },
-                Page::SettingsPage => {
-                    if sensor_data.rotary == 0 {
-                        Some(Page::MainMenuPage)
-                    } else if sensor_data.rotary < 128 {
-                        self.settings.set_keep_all(true);
-                        None
-                    } else if sensor_data.rotary < 256 {
-                        self.settings.set_track_all(true);
-                        None
-                    } else if sensor_data.rotary < 512 {
-                        self.settings.set_keep_all(false);
-                        None
-                    } else if sensor_data.rotary < 1024 {
-                        self.settings.set_track_all(false);
-                        None
-                    } else { None }
+            let mut new_page = None;
+
+            if sensor_data.rotary == 0 {
+                new_page = Some(match self.current_page {
+                    Page::MainMenuPage => Page::ButtonPage,
+                    Page::ButtonPage => Page::RotaryPage,
+                    Page::RotaryPage => Page::SoundPage,
+                    Page::SoundPage => Page::LightPage,
+                    Page::LightPage => Page::TemperaturePage,
+                    Page::TemperaturePage => Page::SettingsPage,
+                    Page::SettingsPage => Page::MainMenuPage,
+                });
+            } else if matches!(self.current_page, Page::SettingsPage) {
+                if sensor_data.rotary < 128 {
+                    self.settings.set_keep_all(true);
+                } else if sensor_data.rotary < 256 {
+                    self.settings.set_track_all(true);
+                } else if sensor_data.rotary < 512 {
+                    self.settings.set_keep_all(false);
+                } else if sensor_data.rotary < 1024 {
+                    self.settings.set_track_all(false);
                 }
-            };
+            }
 
             if let Some(new_page) = new_page {
                 self.current_page = new_page;
                 changed_page = true;
             }
-
+            
             self.last_button_press_time = environment_data.current_time;
         }
 
@@ -132,7 +106,7 @@ impl AppState {
         current_end_x = draw_text_cb(current_end_x, cursor[1], timer.as_ptr());
 
         draw_text_cb(current_end_x, cursor[1], "<\0".as_ptr());
-        
+
         cursor[1] += header_font_height as i16;
         for text in self.current_page.render(
             &self.sensor_accumulator,
