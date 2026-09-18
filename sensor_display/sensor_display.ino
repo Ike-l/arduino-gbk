@@ -96,7 +96,7 @@ void loop() {
 
   sensor_data.button = digitalRead(button_pin) == HIGH;
   sensor_data.rotary = analogRead(rotary_pin);
-  sensor_data.temperature = dht.readTemperature(); // Celsius
+  sensor_data.temperature = (int16_t)(dht.readTemperature() * 10); // Celsius
 
   tick(&sensor_data, &environment_data);
 

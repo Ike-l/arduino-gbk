@@ -10,7 +10,7 @@ extern "C" {
         int16_t sound;
         int16_t light;
 
-        float temperature;
+        int16_t temperature;
         float humidity;
         float pressure;
 
