@@ -1,3 +1,5 @@
+use heapless::String;
+
 use crate::{DrawTextCallback, SetFontCallback, current_time::EnvironmentData, display_settings::DisplaySettings, font_type::FontType, pages::Page, push_number, sensor_data::{SensorData, sensor_accumulator::SensorAccumulator}, settings::Settings};
 
 pub struct AppState {
@@ -92,7 +94,8 @@ impl AppState {
 
         let header_font_height = set_font_cb(FontType::Header as u8);
 
-        let mut page_header = self.current_page.header();
+        let mut page_header = String::<16>::new();
+        let _ = page_header.push_str(self.current_page.header());
         let _ = page_header.push_str(" \0");
         
         let mut current_end_x = draw_text_cb(cursor[0], cursor[1], page_header.as_ptr());

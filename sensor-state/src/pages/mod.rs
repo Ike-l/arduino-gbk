@@ -27,10 +27,8 @@ impl Page {
         Self::MainMenuPage
     }
 
-    pub fn header(&self) -> String<16> {
-        let mut text = String::new();
-
-        let header = match self {
+    pub fn header(&self) -> &'static str {
+        match self {
             Page::MainMenuPage => main_menu::header(),
             Page::ButtonPage => button::header(),
             Page::RotaryPage => rotary::header(),
@@ -38,11 +36,7 @@ impl Page {
             Page::LightPage => light::header(),
             Page::TemperaturePage => temperature::header(),
             Page::SettingsPage => settings::header(),
-        };
-
-        text.push_str(header);
-
-        text
+        }
     }
 
     pub fn render(
