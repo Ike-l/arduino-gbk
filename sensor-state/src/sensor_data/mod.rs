@@ -8,7 +8,7 @@ pub struct SensorData {
     pub sound: i16,
     pub light: i16,
 
-    pub temperature: f32, // Celsius
+    pub temperature: i32, // Celsius
     pub humidity: f32, 
     pub pressure: f32, // Pascals
 

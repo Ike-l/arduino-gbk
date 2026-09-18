@@ -91,20 +91,3 @@ pub fn push_number(
         let _ = text.push(buf[i] as char);
     }
 }
-
-pub fn push_float(text: &mut String<16>, mut val: f32) {
-    if val < 0.0 {
-        let _ = text.push('-');
-        val = -val;
-    }
-
-    let int_val = ((val + 0.05) * 10.0) as u32;
-
-    let whole = int_val / 10;
-    let frac = (int_val % 10) as u8;
-
-    push_number(text, whole);
-
-    let _ = text.push('.');
-    let _ = text.push((b'0' + frac) as char);
-}

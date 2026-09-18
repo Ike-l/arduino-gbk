@@ -22,12 +22,12 @@ pub fn render(
     let _ = text2.push_str("max: ");
     let value = sensor_accumulator.temperature.max;
     format_float(&mut text2, value);
-
+    
     let value = sensor_accumulator.temperature.min;
     if let Some(value) = value {
         let _ = text3.push_str("min: ");
         format_float(&mut text3, value);
-    } else {
+    } else { 
         let _ = text3.push_str("min: None");
     }
     
