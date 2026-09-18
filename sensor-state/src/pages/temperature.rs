@@ -1,6 +1,6 @@
 use heapless::String;
 
-use crate::{push_number, sensor_data::sensor_accumulator::SensorAccumulator, settings::Settings};
+use crate::{push_number, sensor_data::sensor_accumulator::{SensorAccumulator, temperature_accumulator::TemperatureAccumulator}, settings::Settings};
 
 pub fn header() -> &'static str {
     "Temperature"
@@ -19,16 +19,20 @@ pub fn render(
     let _ = text1.push_str("val: ");
     format_float(&mut text1, value);
 
-    let _ = text2.push_str("max: ");
     let value = sensor_accumulator.temperature.max;
-    format_float(&mut text2, value);
+    if value == TemperatureAccumulator::DEFAULT_MAX {
+        let _ = text2.push_str("max: None");
+    } else {
+        let _ = text2.push_str("max: ");
+        format_float(&mut text2, value);
+    }
     
     let value = sensor_accumulator.temperature.min;
-    if let Some(value) = value {
+    if value == TemperatureAccumulator::DEFAULT_MIN {
+        let _ = text3.push_str("min: None");
+    } else {
         let _ = text3.push_str("min: ");
         format_float(&mut text3, value);
-    } else { 
-        let _ = text3.push_str("min: None");
     }
     
     result[0] = Some(text1);

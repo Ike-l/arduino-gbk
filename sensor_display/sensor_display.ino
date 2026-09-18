@@ -106,8 +106,6 @@ void loop() {
   if (environment_data.current_time - last_render_time >= render_interval) {
     last_render_time = environment_data.current_time;
 
-    sensor_data.sound = analogRead(sound_pin);
-    sensor_data.light = analogRead(light_pin);
 
     sensor_data.humidity = dht.readHumidity();
 

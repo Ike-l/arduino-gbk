@@ -3,12 +3,15 @@ use crate::sensor_data::SensorData;
 pub struct TemperatureAccumulator {
     pub value: i32,
     pub max: i32,
-    pub min: Option<i32>
+    pub min: i32
 }
 
 impl TemperatureAccumulator {
+    pub const DEFAULT_MIN: i32 = 9999;
+    pub const DEFAULT_MAX: i32 = -9999;
+
     pub const fn default() -> Self {
-        Self { value: 0, max: 0, min: None }
+        Self { value: 0, max: Self::DEFAULT_MAX, min: Self::DEFAULT_MIN }
     }
 
     pub fn track(&mut self, _counted_click: bool, sensor_data: &SensorData) {
@@ -17,18 +20,14 @@ impl TemperatureAccumulator {
             self.max = self.value;
         }
 
-        if self.min.is_some_and(|v| self.value < v) {
-            self.min.replace(self.value);
-        }
-
-        if self.min.is_none() {
-            self.min.replace(self.value);
+        if self.value < self.min {
+            self.min = self.value;
         }
     }
 
     pub fn clear(&mut self) {
         self.value = 0;
-        self.max = 0;
-        self.min = None
+        self.max = Self::DEFAULT_MAX;
+        self.min = Self::DEFAULT_MIN
     }
 }
