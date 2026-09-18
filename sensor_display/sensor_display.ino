@@ -97,6 +97,8 @@ void loop() {
   sensor_data.button = (PIND & (1 << 6)) != 0;
   // sensor_data.button = digitalRead(button_pin) == HIGH;
   sensor_data.rotary = analogRead(rotary_pin);
+  sensor_data.sound = analogRead(sound_pin);
+  sensor_data.light = analogRead(light_pin);
   sensor_data.temperature = (int16_t)(dht.readTemperature() * 10); // Celsius
 
   tick(&sensor_data, &environment_data);

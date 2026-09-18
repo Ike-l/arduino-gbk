@@ -1,6 +1,6 @@
 use heapless::String;
 
-use crate::{push_number, sensor_data::sensor_accumulator::SensorAccumulator, settings::Settings};
+use crate::{push_number, sensor_data::sensor_accumulator::{SensorAccumulator, light_accumulator::LightAccumulator}, settings::Settings};
 
 pub fn header() -> &'static str {
     "Light"
@@ -13,15 +13,29 @@ pub fn render(
 ) {
     let mut text1 = String::new();
     let mut text2 = String::new();
+    let mut text3 = String::new();
 
     let _ = text1.push_str("val: ");
     let value = sensor_accumulator.light.value;
     push_number(&mut text1, value as u32);
 
-    let _ = text2.push_str("max: ");
     let value = sensor_accumulator.light.max;
-    push_number(&mut text2, value as u32);
+    if value == LightAccumulator::DEFAULT_MAX {
+        let _ = text2.push_str("max: None");
+    } else {
+        let _ = text2.push_str("max: ");
+        push_number(&mut text2, value as u32);
+    }
+
+    let value = sensor_accumulator.light.min;
+    if value == LightAccumulator::DEFAULT_MIN {
+        let _ = text3.push_str("min: None");
+    } else {
+        let _ = text3.push_str("min: ");
+        push_number(&mut text3, value as u32);
+    }
     
     result[0] = Some(text1);
     result[1] = Some(text2);
+    result[2] = Some(text3);
 }
