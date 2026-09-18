@@ -94,7 +94,8 @@ void setup() {
 void loop() {
   environment_data.current_time = millis();
 
-  sensor_data.button = digitalRead(button_pin) == HIGH;
+  sensor_data.button = (PIND & (1 << 6)) != 0;
+  // sensor_data.button = digitalRead(button_pin) == HIGH;
   sensor_data.rotary = analogRead(rotary_pin);
   sensor_data.temperature = (int16_t)(dht.readTemperature() * 10); // Celsius
 
