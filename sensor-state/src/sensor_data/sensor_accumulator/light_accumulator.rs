@@ -1,14 +1,14 @@
 use crate::sensor_data::SensorData;
 
 pub struct LightAccumulator {
-    pub value: i16,
-    pub max: i16,
-    pub min: i16,
+    pub value: u16,
+    pub max: u16,
+    pub min: u16,
 }
 
 impl LightAccumulator {
-    pub const DEFAULT_MAX: i16 = -9999;
-    pub const DEFAULT_MIN: i16 = 9999;
+    pub const DEFAULT_MAX: u16 = 0;
+    pub const DEFAULT_MIN: u16 = 9999;
 
     pub const fn default() -> Self {
         Self { value: 0, max: Self::DEFAULT_MAX, min: Self::DEFAULT_MIN }
