@@ -20,33 +20,27 @@ pub fn render(
         
     let value = sensor_accumulator.acceleration.value;
     let _ = text1.push_str("val:");
-    let _ = text2.push('[');
     format_float(&mut text2, value[0]);
     let _ = text2.push_str(",");
     format_float(&mut text2, value[1]);
     let _ = text2.push_str(",");
     format_float(&mut text2, value[2]);
-    let _ = text2.push(']');
 
     let value = sensor_accumulator.acceleration.max;
     let _ = text3.push_str("max:");
-    let _ = text4.push('[');
     format_float(&mut text4, value[0]);
     let _ = text4.push_str(",");
     format_float(&mut text4, value[1]);
     let _ = text4.push_str(",");
     format_float(&mut text4, value[2]);
-    let _ = text4.push(']');
 
     let value = sensor_accumulator.acceleration.min;
     let _ = text5.push_str("min:");
-    let _ = text6.push('[');
     format_float(&mut text6, value[0]);
     let _ = text6.push_str(",");
     format_float(&mut text6, value[1]);
     let _ = text6.push_str(",");
     format_float(&mut text6, value[2]);
-    let _ = text6.push(']');
 
     result[0] = Some(text1);
     result[1] = Some(text2);
