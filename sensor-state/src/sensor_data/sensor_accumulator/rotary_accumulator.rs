@@ -1,8 +1,8 @@
 use crate::sensor_data::SensorData;
 
 pub struct RotaryAccumulator {
-    pub value: i16,
-    pub max: i16,
+    pub value: u16,
+    pub max: u16,
 }
 
 impl RotaryAccumulator {
