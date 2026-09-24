@@ -8,6 +8,7 @@ pub mod rotary;
 pub mod sound;
 pub mod light;
 pub mod temperature;
+pub mod humidity;
 pub mod settings;
 
 #[derive(PartialEq)]
@@ -19,6 +20,7 @@ pub enum Page {
     SoundPage,
     LightPage,
     TemperaturePage,
+    HumidityPage,
     SettingsPage
 }
 
@@ -35,6 +37,7 @@ impl Page {
             Page::SoundPage => sound::header(),
             Page::LightPage => light::header(),
             Page::TemperaturePage => temperature::header(),
+            Page::HumidityPage => humidity::header(),
             Page::SettingsPage => settings::header(),
         }
     }
@@ -47,27 +50,14 @@ impl Page {
         let mut result: [Option<String<16>>; 8] = [const { None }; 8];
 
         match self {
-            Page::MainMenuPage => {
-                main_menu::render(&mut result, sensor_accumulator, settings)
-            },
-            Page::ButtonPage => {
-                button::render(&mut result, sensor_accumulator, settings);
-            },
-            Page::RotaryPage => {
-                rotary::render(&mut result, sensor_accumulator, settings);
-            },
-            Page::SoundPage => {
-                sound::render(&mut result, sensor_accumulator, settings);
-            },
-            Page::LightPage => {
-                light::render(&mut result, sensor_accumulator, settings);
-            },
-            Page::TemperaturePage => {
-                temperature::render(&mut result, sensor_accumulator, settings);
-            },
-            Page::SettingsPage => {
-                settings::render(&mut result, sensor_accumulator, settings);
-            }
+            Page::MainMenuPage => main_menu::render(&mut result, sensor_accumulator, settings),
+            Page::ButtonPage => button::render(&mut result, sensor_accumulator, settings),
+            Page::RotaryPage => rotary::render(&mut result, sensor_accumulator, settings),
+            Page::SoundPage => sound::render(&mut result, sensor_accumulator, settings),
+            Page::LightPage => light::render(&mut result, sensor_accumulator, settings),
+            Page::TemperaturePage => temperature::render(&mut result, sensor_accumulator, settings),
+            Page::HumidityPage => humidity::render(&mut result, sensor_accumulator, settings),
+            Page::SettingsPage => settings::render(&mut result, sensor_accumulator, settings)
         };
 
         result.into_iter()
