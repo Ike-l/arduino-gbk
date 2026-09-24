@@ -1,4 +1,4 @@
-use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{button_accumulator::ButtonAccumulator, humidity_accumulator::HumidityAccumulator, light_accumulator::LightAccumulator, rotary_accumulator::RotaryAccumulator, sound_accumulator::SoundAccumulator, temperature_accumulator::TemperatureAccumulator}}};
+use crate::{pages::Page, sensor_data::{SensorData, sensor_accumulator::{acceleration_accumulator::AccelerationAccumulator, button_accumulator::ButtonAccumulator, humidity_accumulator::HumidityAccumulator, light_accumulator::LightAccumulator, rotary_accumulator::RotaryAccumulator, sound_accumulator::SoundAccumulator, temperature_accumulator::TemperatureAccumulator}}};
 
 pub mod button_accumulator;
 pub mod rotary_accumulator;
@@ -6,6 +6,7 @@ pub mod sound_accumulator;
 pub mod light_accumulator;
 pub mod temperature_accumulator;
 pub mod humidity_accumulator;
+pub mod acceleration_accumulator;
 
 pub struct SensorAccumulator {
     pub button: ButtonAccumulator,
@@ -14,6 +15,7 @@ pub struct SensorAccumulator {
     pub light: LightAccumulator,
     pub temperature: TemperatureAccumulator,
     pub humidity: HumidityAccumulator,
+    pub acceleration: AccelerationAccumulator,
 }
 
 impl SensorAccumulator {
@@ -25,6 +27,7 @@ impl SensorAccumulator {
             light: LightAccumulator::default(),
             temperature: TemperatureAccumulator::default(),
             humidity: HumidityAccumulator::default(),
+            acceleration: AccelerationAccumulator::default()
         }
     }
 
@@ -37,8 +40,8 @@ impl SensorAccumulator {
         self.light.track(counted_click, sensor_data);
         self.temperature.track(counted_click, sensor_data);
         self.humidity.track(counted_click, sensor_data);
+        self.acceleration.track(counted_click, sensor_data);
 
-        // sensor_data.acceleration
         // sensor_data.pressure
     }
 
@@ -52,6 +55,7 @@ impl SensorAccumulator {
             Page::LightPage => self.light.track(counted_click, sensor_data),
             Page::TemperaturePage => self.temperature.track(counted_click, sensor_data),
             Page::HumidityPage => self.humidity.track(counted_click, sensor_data),
+            Page::AccelerationPage => self.acceleration.track(counted_click, sensor_data),
             Page::SettingsPage => ()
         }
     }
@@ -66,6 +70,7 @@ impl SensorAccumulator {
         if !matches!(current_page, Page::LightPage)  { self.light.clear(); }
         if !matches!(current_page, Page::TemperaturePage) { self.temperature.clear(); }
         if !matches!(current_page, Page::HumidityPage) { self.humidity.clear(); }
+        if !matches!(current_page, Page::AccelerationPage) { self.humidity.clear(); }
 
         self.track_one(counted_click, current_page, sensor_data);
     }

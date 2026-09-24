@@ -9,6 +9,7 @@ pub mod sound;
 pub mod light;
 pub mod temperature;
 pub mod humidity;
+pub mod acceleration;
 pub mod settings;
 
 #[derive(PartialEq)]
@@ -21,6 +22,7 @@ pub enum Page {
     LightPage,
     TemperaturePage,
     HumidityPage,
+    AccelerationPage,
     SettingsPage
 }
 
@@ -38,6 +40,7 @@ impl Page {
             Page::LightPage => light::header(),
             Page::TemperaturePage => temperature::header(),
             Page::HumidityPage => humidity::header(),
+            Page::AccelerationPage => acceleration::header(),
             Page::SettingsPage => settings::header(),
         }
     }
@@ -57,6 +60,7 @@ impl Page {
             Page::LightPage => light::render(&mut result, sensor_accumulator, settings),
             Page::TemperaturePage => temperature::render(&mut result, sensor_accumulator, settings),
             Page::HumidityPage => humidity::render(&mut result, sensor_accumulator, settings),
+            Page::AccelerationPage => acceleration::render(&mut result, sensor_accumulator, settings),
             Page::SettingsPage => settings::render(&mut result, sensor_accumulator, settings)
         };
 

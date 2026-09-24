@@ -104,9 +104,9 @@ void load_data() {
   sensor_data.humidity = (uint16_t)(dht.readHumidity() * 10);
   // sensor_data.pressure = bmp280.getPressure(); // Pascals // * 100
 
-  sensor_data.acceleration[0] = (int16_t)(accel.getAccelerationX() * 100);
-  sensor_data.acceleration[1] = (int16_t)(accel.getAccelerationY() * 100);
-  sensor_data.acceleration[2] = (int16_t)(accel.getAccelerationZ() * 100);
+  sensor_data.acceleration[0] = (int16_t)(accel.getAccelerationX() * 10);
+  sensor_data.acceleration[1] = (int16_t)(accel.getAccelerationY() * 10);
+  sensor_data.acceleration[2] = (int16_t)(accel.getAccelerationZ() * 10);
 }
 
 void loop() {
