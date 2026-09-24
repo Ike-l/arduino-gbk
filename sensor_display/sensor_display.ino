@@ -40,11 +40,8 @@ DisplaySettings display_settings;
 int16_t draw_text_callback(int16_t x, int16_t y, const char* text) {
   // offsets from how text is rendered from the bottom of the text
   int16_t baseline_y = y + oled.getAscent();
-
-  oled.setCursor(x, baseline_y);
-  oled.print(text);
-
-  return x + oled.getStrWidth(text);
+  
+  return x + oled.drawStr(x, baseline_y, text);
 }
 
 int8_t set_font_callback(uint8_t font_type) {
