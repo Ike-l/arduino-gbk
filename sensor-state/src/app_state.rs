@@ -45,7 +45,8 @@ impl AppState {
                     Page::RotaryPage => Page::SoundPage,
                     Page::SoundPage => Page::LightPage,
                     Page::LightPage => Page::TemperaturePage,
-                    Page::TemperaturePage => Page::SettingsPage,
+                    Page::TemperaturePage => Page::HumidityPage,
+                    Page::HumidityPage => Page::SettingsPage,
                     Page::SettingsPage => Page::MainMenuPage,
                 });
             } else if matches!(self.current_page, Page::SettingsPage) {
