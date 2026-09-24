@@ -1,6 +1,6 @@
 use heapless::String;
 
-use crate::{push_number, sensor_data::sensor_accumulator::{SensorAccumulator, temperature_accumulator::TemperatureAccumulator}, settings::Settings};
+use crate::{format_float, sensor_data::sensor_accumulator::{SensorAccumulator, temperature_accumulator::TemperatureAccumulator}, settings::Settings};
 
 pub fn header() -> &'static str {
     "Temperature"
@@ -40,15 +40,3 @@ pub fn render(
     result[2] = Some(text3);
 }
 
-fn format_float(mut text: &mut String<16>, mut value: i32) {
-    if value < 0 {
-        let _ = text.push('-');
-        value = -value;
-    }
-
-    let integer = value / 10;
-    let decimal = value % 10;
-    push_number(&mut text, integer as u32);
-    let _ = text.push('.');
-    push_number(&mut text, decimal as u32);
-}

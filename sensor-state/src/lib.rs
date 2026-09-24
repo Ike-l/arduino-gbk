@@ -91,3 +91,17 @@ pub fn push_number(
         let _ = text.push(buf[i] as char);
     }
 }
+
+fn format_float(mut text: &mut String<16>, mut value: i16) {
+    if value < 0 {
+        let _ = text.push('-');
+        value = -value;
+    }
+
+    let integer = value / 10;
+    let fraction = value % 10;
+
+    push_number(&mut text, integer as u32);
+    let _ = text.push('.');
+    push_number(&mut text, fraction as u32);
+}
