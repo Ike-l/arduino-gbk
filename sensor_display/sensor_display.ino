@@ -91,28 +91,32 @@ void setup() {
   delay(2000);
 }
 
+void load_data() {
+  sensor_data.button = (PIND & (1 << 6)) != 0;
+  // sensor_data.button = digitalRead(button_pin) == HIGH;
+
+  sensor_data.rotary = (uint16_t)(analogRead(rotary_pin));
+  sensor_data.sound = (uint16_t)(analogRead(sound_pin));
+  sensor_data.light = (uint16_t)(analogRead(light_pin));
+
+  sensor_data.temperature = (int16_t)(dht.readTemperature() * 10); // Celsius
+
+  sensor_data.humidity = (uint16_t)(dht.readHumidity() * 10);
+  // sensor_data.pressure = bmp280.getPressure(); // Pascals // * 100
+
+  sensor_data.acceleration[0] = (int16_t)(accel.getAccelerationX() * 100);
+  sensor_data.acceleration[1] = (int16_t)(accel.getAccelerationY() * 100);
+  sensor_data.acceleration[2] = (int16_t)(accel.getAccelerationZ() * 100);
+}
+
 void loop() {
   environment_data.current_time = millis();
 
-  sensor_data.button = (PIND & (1 << 6)) != 0;
-  // sensor_data.button = digitalRead(button_pin) == HIGH;
-  sensor_data.rotary = analogRead(rotary_pin);
-  sensor_data.sound = analogRead(sound_pin);
-  sensor_data.light = analogRead(light_pin);
-  sensor_data.temperature = (int16_t)(dht.readTemperature() * 10); // Celsius
-
+  load_data();
   tick(&sensor_data, &environment_data);
 
   if (environment_data.current_time - last_render_time >= render_interval) {
     last_render_time = environment_data.current_time;
-
-
-    sensor_data.humidity = dht.readHumidity();
-
-    // sensor_data.pressure = bmp280.getPressure(); // Pascals
-    sensor_data.acceleration[0] = accel.getAccelerationX();
-    sensor_data.acceleration[1] = accel.getAccelerationY();
-    sensor_data.acceleration[2] = accel.getAccelerationZ();
 
     oled.firstPage();
     do {
