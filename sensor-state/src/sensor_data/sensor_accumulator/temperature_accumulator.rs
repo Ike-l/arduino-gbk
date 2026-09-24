@@ -1,14 +1,14 @@
 use crate::sensor_data::SensorData;
 
 pub struct TemperatureAccumulator {
-    pub value: i32,
-    pub max: i32,
-    pub min: i32
+    pub value: i16,
+    pub max: i16,
+    pub min: i16
 }
 
 impl TemperatureAccumulator {
-    pub const DEFAULT_MIN: i32 = 9999;
-    pub const DEFAULT_MAX: i32 = -9999;
+    pub const DEFAULT_MIN: i16 = 9999;
+    pub const DEFAULT_MAX: i16 = -9999;
 
     pub const fn default() -> Self {
         Self { value: 0, max: Self::DEFAULT_MAX, min: Self::DEFAULT_MIN }
