@@ -6,15 +6,16 @@ extern "C" {
     struct SensorData {
         bool button;
 
-        int16_t rotary;
-        int16_t sound;
-        int16_t light;
+        uint16_t rotary;
+        uint16_t sound;
+        uint16_t light;
 
         int16_t temperature;
-        float humidity;
-        float pressure;
+        
+        uint16_t humidity;
+        uint16_t pressure;
 
-        float acceleration[3];
+        int16_t acceleration[3];
     };
 
     struct EnvironmentData {
